@@ -1,7 +1,7 @@
 ---
 import { spearlyApiClient } from "../lib/spearly"
 
-const contents = await spearlyApiClient.getList("blog")
+const contents = await spearlyApiClient.getList("article")
 const posts = contents.data.map(c => {
     const title = c.attributes.fields.data.find(f => f.attributes.identifier === "title")
     const date = c.attributes.fields.data.find(f => f.attributes.identifier === "date")
