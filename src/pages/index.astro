@@ -1,17 +1,18 @@
 ---
-import { spearlyApiClient } from "../lib/spearly"
+import { microcmsApiClient } from "../lib/microcms"
+const contents = await microcmsApiClient.getList({endpoint: "blogs"})
 
-const contents = await spearlyApiClient.getList("article")
-const posts = contents.data.map(c => {
-    const title = c.attributes.fields.data.find(f => f.attributes.identifier === "title")
-    const date = c.attributes.fields.data.find(f => f.attributes.identifier === "date")
-    const alias = c.attributes.contentAlias
+const posts = contents.contents.map(c => {
+    const title = c.title
+    const description = c.description
+    const alias = c.id
+
     return {
-        title: title?.attributes.value,
+        title,
         alias,
-        date: date?.attributes.value,
-    }
-})
+        description,
+      }
+  })
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +21,7 @@ const posts = contents.data.map(c => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alliana Blog</title>
 </head>
+
 <body>
     <h1>Alliana Blog</h1>
     <ul>
@@ -28,7 +30,6 @@ const posts = contents.data.map(c => {
           <a href={`/posts/${post.alias}/`}>
             <h2>{post.title}</h2>
           </a>
-          <time>{post.date}</time>
         </li>
       ))}
     </ul>
